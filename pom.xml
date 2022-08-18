@@ -11,8 +11,8 @@
     <groupId>com.mifelusers</groupId>
     <artifactId>service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Mifel user service</name>
-    <description>Oauth2 user info REST API</description>
+    <name>Mifel usuario service</name>
+    <description>Oauth2 usuario info REST API</description>
     <properties>
         <java.version>11</java.version>
     </properties>
