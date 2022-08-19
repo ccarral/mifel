@@ -1,12 +1,9 @@
 package com.mifelusers.service;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "USUARIO")
 public class Usuario {
     @Id
     private long id;
@@ -14,6 +11,10 @@ public class Usuario {
     private String nombre;
     @Column
     private String primerApellido;
+
+
+    @Column
+    private String segundoApellido;
     @Column
     private String email;
 
@@ -39,6 +40,14 @@ public class Usuario {
 
     public void setPrimerApellido(String primerApellido) {
         this.primerApellido = primerApellido;
+    }
+
+    public String getSegundoApellido() {
+        return segundoApellido;
+    }
+
+    public void setSegundoApellido(String segundoApellido) {
+        this.segundoApellido = segundoApellido;
     }
 
     public String getEmail() {

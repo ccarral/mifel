@@ -12,7 +12,7 @@ spring:
         springframework:
           security: DEBUG
   datasource:
-    url: "jdbc:h2:mem:testdb"
+    url: "jdbc:h2:mem:test"
     driverClassName: org.h2.Driver
     username: sa
     password: ""
@@ -20,7 +20,7 @@ spring:
   jpa:
     show-sql: True
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
