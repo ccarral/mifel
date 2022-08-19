@@ -1,9 +1,20 @@
 package com.mifelusers.service;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "usuario")
 public class Usuario {
+    @Id
     private long id;
+    @Column
     private String nombre;
+    @Column
     private String primerApellido;
+    @Column
     private String email;
 
     public long getId() {
