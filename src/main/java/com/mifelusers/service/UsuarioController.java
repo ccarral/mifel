@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UsuarioController {
 
-    @GetMapping("/user")
+    @GetMapping("/usuario")
     public Usuario getUser() {
         Usuario usuario = new Usuario();
         usuario.setNombre("Carlos");
@@ -14,5 +14,10 @@ public class UsuarioController {
         usuario.setEmail("carloscarral13@gmail.com");
         usuario.setId(0);
         return usuario;
+    }
+
+    @GetMapping("/publico")
+    public String publico() {
+        return "Hola!";
     }
 }

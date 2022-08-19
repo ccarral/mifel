@@ -43,7 +43,7 @@ class MifelServiceApplicationTests {
      */
     @Test
     void redirectNonAuth() throws Exception {
-        this.mockMvc.perform(get("/user"))
+        this.mockMvc.perform(get("/usuario"))
                 .andExpect(status().isFound());
     }
 
@@ -54,7 +54,7 @@ class MifelServiceApplicationTests {
      */
     @Test
     void accessUsuarioAuth() throws Exception {
-        this.mockMvc.perform(get("/user")
+        this.mockMvc.perform(get("/usuario")
                         .with(oauth2Login()))
                 .andExpect(status().isOk());
     }
