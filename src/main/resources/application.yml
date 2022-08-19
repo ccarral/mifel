@@ -6,3 +6,25 @@ spring:
           github:
             clientId: ${GITHUB_CLIENT_ID}
             clientSecret: ${GITHUB_CLIENT_SECRET}
+  logging:
+    level:
+      org:
+        springframework:
+          security: DEBUG
+  datasource:
+    url: "jdbc:h2:mem:testdb"
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    show-sql: True
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2
