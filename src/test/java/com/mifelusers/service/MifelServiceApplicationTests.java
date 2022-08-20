@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@DirtiesContext
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 class MifelServiceApplicationTests {
@@ -43,7 +45,7 @@ class MifelServiceApplicationTests {
      */
     @Test
     void redirectNonAuth() throws Exception {
-        this.mockMvc.perform(get("/usuario"))
+        this.mockMvc.perform(get("/api/mifel/usuarios/"))
                 .andExpect(status().isFound());
     }
 
@@ -54,7 +56,7 @@ class MifelServiceApplicationTests {
      */
     @Test
     void accessUsuarioAuth() throws Exception {
-        this.mockMvc.perform(get("/usuario")
+        this.mockMvc.perform(get("/api/mifel/usuarios/")
                         .with(oauth2Login()))
                 .andExpect(status().isOk());
     }

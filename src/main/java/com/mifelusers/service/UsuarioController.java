@@ -5,11 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/mifel/usuarios")
 public class UsuarioController {
 
     Logger logger = LoggerFactory.getLogger(UsuarioController.class);
@@ -24,7 +26,7 @@ public class UsuarioController {
      * @param nombre Nombre indistinto de capitalización
      * @return
      */
-    @GetMapping("/usuarios/nombre/{nombre}")
+    @GetMapping("/nombre/{nombre}")
     public List<Usuario> getUsuariosByNombre(@PathVariable("nombre") String nombre) {
         logger.info("Usuarios por nombre [" + nombre + "]");
         return usuarioRepository.findByNombreIgnoreCase(nombre);
@@ -33,7 +35,7 @@ public class UsuarioController {
     /**
      * @return Regresa todos los usuarios contenidos en la B.D
      */
-    @GetMapping("/usuarios")
+    @GetMapping("/")
     public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
