@@ -1,8 +1,10 @@
 package com.mifelusers.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -10,16 +12,29 @@ import java.util.List;
 @RestController
 public class UsuarioController {
 
+    Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    @GetMapping("/usuario/nombre/{nom}")
-    public List<Usuario> getUser(@Param("nom") String nombre) {
-        return usuarioRepository.findByNombreIgnoreCase("Carlos");
+
+    /**
+     * Regresa todos los usuarios cuyo nombre coincide con `nombre`
+     *
+     * @param nombre Nombre indistinto de capitalización
+     * @return
+     */
+    @GetMapping("/usuarios/nombre/{nombre}")
+    public List<Usuario> getUsuariosByNombre(@PathVariable("nombre") String nombre) {
+        logger.info("Usuarios por nombre [" + nombre + "]");
+        return usuarioRepository.findByNombreIgnoreCase(nombre);
     }
 
-    @GetMapping("/publico")
-    public String publico() {
-        return "Hola!";
+    /**
+     * @return Regresa todos los usuarios contenidos en la B.D
+     */
+    @GetMapping("/usuarios")
+    public List<Usuario> getAllUsuarios() {
+        return usuarioRepository.findAll();
     }
 }

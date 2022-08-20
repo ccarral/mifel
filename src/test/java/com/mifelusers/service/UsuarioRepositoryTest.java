@@ -24,4 +24,17 @@ class UsuarioRepositoryTest {
         resultados = usuarioRepository.findByNombreIgnoreCase("ignacio");
         assertEquals(0, resultados.size());
     }
+
+    @Test
+    void findByPrimerApellidoIgnoreCase() {
+        List<Usuario> resultados = usuarioRepository.findByPrimerApellidoIgnoreCase("ELIZONDO");
+        assertEquals(1, resultados.size());
+    }
+
+    @Test
+    void findById() {
+        Usuario usuario = usuarioRepository.findById(0);
+        assertEquals("Carlos", usuario.getNombre());
+        assertEquals("Carral", usuario.getPrimerApellido());
+    }
 }

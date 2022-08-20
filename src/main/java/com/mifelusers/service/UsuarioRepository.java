@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByNombreIgnoreCase(String nombre);
+
+    List<Usuario> findByPrimerApellidoIgnoreCase(String nombre);
+
+    Usuario findById(long id);
 }
