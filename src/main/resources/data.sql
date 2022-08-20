@@ -1,4 +1,5 @@
 insert into usuario values 
+(0,  'carloscarralcortes@gmail.com', 'Carlos', 'Carral' , 'Cortés' ),
 (1,  'luismartinezflores@gmail.com', 'Luis', 'Martinez' , 'Flores' ),
 (2,  'jamesmcgilljuarez@gmail.com', 'James', 'McGill' , 'Juarez' ),
 (3,  'franciscozamudioleon@gmail.com', 'Francisco', 'Zamudio' , 'León' ),
