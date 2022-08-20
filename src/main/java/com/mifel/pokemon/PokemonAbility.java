@@ -1,10 +1,13 @@
 package com.mifel.pokemon;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PokemonAbility {
     Ability ability;
+    @JsonProperty(value = "is_hidden")
     boolean isHidden;
     int slot;
 
