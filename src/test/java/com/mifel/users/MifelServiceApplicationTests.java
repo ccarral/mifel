@@ -1,4 +1,4 @@
-package com.mifelusers.service;
+package com.mifel.users;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @DirtiesContext
@@ -19,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class MifelServiceApplicationTests {
 
+    //@Autowired
+    //private TestRestTemplate restTemplate;
 
     @Autowired
     MockMvc mockMvc;
@@ -45,6 +47,4 @@ class MifelServiceApplicationTests {
                         .with(oauth2Login()))
                 .andExpect(status().isOk());
     }
-
-
 }

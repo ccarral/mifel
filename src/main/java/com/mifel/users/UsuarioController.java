@@ -1,4 +1,4 @@
-package com.mifelusers.service;
+package com.mifel.users;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

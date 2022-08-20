@@ -1,4 +1,4 @@
-package com.mifelusers.service;
+package com.mifel.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
