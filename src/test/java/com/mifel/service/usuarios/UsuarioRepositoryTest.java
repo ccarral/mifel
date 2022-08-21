@@ -1,5 +1,7 @@
-package com.mifel.usuarios;
+package com.mifel.service.usuarios;
 
+import com.mifel.service.usuarios.Usuario;
+import com.mifel.service.usuarios.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

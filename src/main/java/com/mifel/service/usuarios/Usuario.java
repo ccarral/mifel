@@ -1,4 +1,4 @@
-package com.mifel.usuarios;
+package com.mifel.service.usuarios;
 
 import javax.persistence.*;
 
