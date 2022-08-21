@@ -41,4 +41,8 @@ public class MifelServiceController {
     public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
+    @GetMapping("/usuarios/id/{id}")
+    public Usuario getAllUsuarios(@PathVariable("id") long id) {
+        return usuarioRepository.findById(id);
+    }
 }
