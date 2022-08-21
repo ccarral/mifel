@@ -1,5 +1,6 @@
 package com.mifel.service;
 
+import com.mifel.service.pokemon.Pokemon;
 import com.mifel.service.usuarios.Usuario;
 import com.mifel.service.usuarios.UsuarioRepository;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/mifel")
 public class MifelServiceController {
 
+    @Autowired
+    RestTemplate restTemplate;
     Logger logger = LoggerFactory.getLogger(MifelServiceController.class);
 
     @Autowired
@@ -44,5 +48,11 @@ public class MifelServiceController {
     @GetMapping("/usuarios/id/{id}")
     public Usuario getAllUsuarios(@PathVariable("id") long id) {
         return usuarioRepository.findById(id);
+    }
+
+    @GetMapping("/pokemon/{nombre}")
+    public Pokemon getPokemon(@PathVariable("nombre") String nombre){
+        String url = String.format("https://pokeapi.co/api/v2/pokemon/%s",nombre);
+        return this.restTemplate.getForObject(url, Pokemon.class);
     }
 }
