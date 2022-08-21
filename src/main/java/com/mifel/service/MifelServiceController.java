@@ -1,6 +1,7 @@
 package com.mifel.service;
 
 import com.mifel.service.pokemon.Pokemon;
+import com.mifel.service.pokemon.PokemonQueryResponse;
 import com.mifel.service.usuarios.Usuario;
 import com.mifel.service.usuarios.UsuarioQueryResponse;
 import com.mifel.service.usuarios.UsuarioRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -69,8 +71,20 @@ public class MifelServiceController {
     }
 
     @GetMapping("/pokemon/{nombre}")
-    public Pokemon getPokemon(@PathVariable("nombre") String nombre){
+    public PokemonQueryResponse getPokemon(@PathVariable("nombre") String nombre){
         String url = String.format("https://pokeapi.co/api/v2/pokemon/%s",nombre);
-        return this.restTemplate.getForObject(url, Pokemon.class);
+        Pokemon pokemon = null;
+        PokemonQueryResponse response = new PokemonQueryResponse();
+        try {
+            pokemon = this.restTemplate.getForObject(url, Pokemon.class);
+            response.setPokemon(pokemon);
+            response.setSuccess(true);
+        } catch (RestClientException e) {
+            // En caso de 500 por parte de la API
+            response.setSuccess(false);
+        }
+        return response;
+
+
     }
 }
