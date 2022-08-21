@@ -1,6 +1,6 @@
-package com.mifel.pokemon;
+package com.mifel.service.pokemon;
 
-public class Ability {
+public class Item {
     String name;
     String url;
 

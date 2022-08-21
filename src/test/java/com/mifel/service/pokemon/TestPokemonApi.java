@@ -1,10 +1,10 @@
-package com.mifel.pokemon;
+package com.mifel.service.pokemon;
 
+import com.mifel.service.pokemon.Pokemon;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

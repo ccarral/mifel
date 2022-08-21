@@ -1,4 +1,4 @@
-package com.mifel.pokemon;
+package com.mifel.service.pokemon;
 
 public class VersionDetails {
     int rarity;
