@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,5 +47,13 @@ class MifelServiceApplicationTests {
         this.mockMvc.perform(get("/api/mifel/usuarios/")
                         .with(oauth2Login()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testPokemonSuccess() throws Exception {
+        this.mockMvc.perform(get("/api/mifel/pokemon/pikachu")
+                        .with(oauth2Login()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$['pokemon'].id", is(25)));
     }
 }
