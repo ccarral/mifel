@@ -1,4 +1,4 @@
-package com.mifel.users;
+package com.mifel.usuarios;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
