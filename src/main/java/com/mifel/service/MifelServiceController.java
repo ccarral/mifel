@@ -2,6 +2,7 @@ package com.mifel.service;
 
 import com.mifel.service.pokemon.Pokemon;
 import com.mifel.service.usuarios.Usuario;
+import com.mifel.service.usuarios.UsuarioQueryResponse;
 import com.mifel.service.usuarios.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,21 +34,38 @@ public class MifelServiceController {
      * @return
      */
     @GetMapping("/usuarios/nombre/{nombre}")
-    public List<Usuario> getUsuariosByNombre(@PathVariable("nombre") String nombre) {
+    public UsuarioQueryResponse getUsuariosByNombre(@PathVariable("nombre") String nombre) {
         logger.info("Usuarios por nombre [" + nombre + "]");
-        return usuarioRepository.findByNombreIgnoreCase(nombre);
+        List<Usuario> usuarios =  usuarioRepository.findByNombreIgnoreCase(nombre);
+        UsuarioQueryResponse response = new UsuarioQueryResponse();
+        response.setUsuarios(usuarios);
+        response.setCount(usuarios.size());
+        response.setSuccess(usuarios.size() > 0);
+        return response;
     }
 
     /**
      * @return Regresa todos los usuarios contenidos en la B.D
      */
     @GetMapping("/usuarios/")
-    public List<Usuario> getAllUsuarios() {
-        return usuarioRepository.findAll();
+    public UsuarioQueryResponse getAllUsuarios() {
+        UsuarioQueryResponse response = new UsuarioQueryResponse();
+        List<Usuario> usuarios =  usuarioRepository.findAll();
+        response.setUsuarios(usuarios);
+        response.setSuccess(true);
+        response.setCount(usuarios.size());
+        return response;
     }
     @GetMapping("/usuarios/id/{id}")
-    public Usuario getAllUsuarios(@PathVariable("id") long id) {
-        return usuarioRepository.findById(id);
+    public UsuarioQueryResponse getAllUsuarios(@PathVariable("id") long id) {
+        var usuario =  usuarioRepository.findById(id);
+        UsuarioQueryResponse response = new UsuarioQueryResponse();
+        if(usuario != null){
+            response.getUsuarios().add(usuario);
+        }
+        response.setSuccess(response.getUsuarios().size() > 0);
+        response.setCount(response.getUsuarios().size());
+        return response;
     }
 
     @GetMapping("/pokemon/{nombre}")
