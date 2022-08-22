@@ -40,10 +40,10 @@ class DefaultCipherTest {
     @Test
     void testBase64Encryption() throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         byte[] msg = "Hola amigos".getBytes(StandardCharsets.UTF_8);
-        String msgBase64 = Base64DefaultCipher.encodeBase64(msg);
         String secretBase64 = Base64DefaultCipher.encodeBase64(secret.getEncoded());
-        String base64EncodedOutput = Base64DefaultCipher.encrypt(msgBase64, secretBase64, iv);
-        String originalMsgBase64 = Base64DefaultCipher.decrypt(base64EncodedOutput, secretBase64, iv);
+        String base64EncodedOutput = Base64DefaultCipher.encrypt(msg, secretBase64, iv);
+        byte[] out = Base64DefaultCipher.decodeBase64(base64EncodedOutput);
+        String originalMsgBase64 = Base64DefaultCipher.decrypt(out, secretBase64, iv);
         byte[] originalMsg = Base64DefaultCipher.decodeBase64(originalMsgBase64);
         assertArrayEquals(msg,originalMsg);
     }
