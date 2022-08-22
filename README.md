@@ -1,10 +1,16 @@
 # Aplicación de prueba Banca Mifel 
 
-![CI](https://github.com/ccarral/mifel/actions/workflows/CI.yaml/badge.svg)  
+[ci-badge]: https://github.com/ccarral/mifel/actions/workflows/CI.yaml/badge.svg
+[ci-url]: https://github.com/ccarral/mifel/actions/workflows/CI.yaml
+[![CI][ci-badge]][ci-url]  
+
 Aplicación de prueba de un servicio REST, utilizando autenticación por OAuth2 y ORM
 a través de la base de datos relacional H2 y CI con Github Actions. También expone
 un servicio de encriptación que provisto de un mensaje y una clave privada (opcional) codificada
 con base64 (url-safe) regresa el contenido encriptado en base 64.
+
+## Autenticación
+La aplicación utiliza el servicio de autenticación OAuth2 provisto por Github
 
 ## Servicios de usuario
 Busca un usuario en una base de datos
