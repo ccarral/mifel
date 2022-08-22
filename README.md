@@ -63,6 +63,10 @@ Busca un usuario en una base de datos
 Consume internamente la siguiente API `https://pokeapi.co/api/v2/pokemon/` y 
 regresa un subconjunto de los datos.
 
+```
+    GET "/api/mifel/pokemon/pikachu"
+```
+
 ```json
 {
   "pokemon": {
@@ -104,4 +108,13 @@ regresa un subconjunto de los datos.
 La clave puede ser provista como un parámetro de URI codificada en url-safe base 64.
 El vector de inicialización es provisto por la instancia `SecureRandom` por default de `java.security`.
 En caso de que el parámetro `key` no sea provisto, el servicio utilizará una clave definida en un archivo `.env`
-con la variable `$AES_SECRET`.
+con la variable `$MIFEL_SECRET`.
+```
+    GET "/api/mifel/encripta/?msg="Hola mundo"
+```
+```json
+{
+  "success": true,
+  "encryptedBase64": "AfNGM4+zRrcCU04Cryb+RQ=="
+}
+```
