@@ -15,6 +15,10 @@ jobs:
           distribution: 'adopt'
       - name: Verificar build
         run: mvn --batch-mode --update-snapshots verify 
+        env:
+          MIFEL_SECRET: A7B5DEA7513F08D2A432FC8F2F55265A
 
       - name: Pruebas unitarias
         run: mvn test
+        env:
+          MIFEL_SECRET: A7B5DEA7513F08D2A432FC8F2F55265A
