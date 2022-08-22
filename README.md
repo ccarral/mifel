@@ -12,6 +12,22 @@ con base64 (url-safe) regresa el contenido encriptado en base 64.
 ## Autenticación
 La aplicación utiliza el servicio de autenticación OAuth2 provisto por Github
 
+## Ejecución
+
+### Build
+```bash
+./mvnw build
+```
+
+### Ejecución con Docker
+```bash
+docker build -t ccarral/mifel .
+docker run -p 8080:8080 \
+  -e MIFEL_SECRET  -e GITHUB_CLIENT_SECRET \
+  -e GITHUB_CLIENT_ID  \
+  ccarral/mifel
+```
+
 ## Servicios de usuario
 Busca un usuario en una base de datos
 ### Buscar todos los usuarios
