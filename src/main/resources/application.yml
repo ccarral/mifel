@@ -28,3 +28,5 @@ spring:
     console:
       enabled: false
       path: /h2
+secrets:
+  key: ${MIFEL_SECRET}

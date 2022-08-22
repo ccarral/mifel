@@ -2,6 +2,7 @@ package com.mifel.service;
 
 import com.mifel.service.crypto.Base64DefaultCipher;
 import com.mifel.service.crypto.CryptoResponse;
+import com.mifel.service.crypto.DefaultCipher;
 import com.mifel.service.pokemon.Pokemon;
 import com.mifel.service.pokemon.PokemonQueryResponse;
 import com.mifel.service.usuarios.Usuario;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.SecureRandom;
@@ -33,6 +35,9 @@ public class MifelServiceController {
     SecureRandom secureRandom;
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    SecretKey defaultSecretKey;
 
 
     /**
@@ -93,7 +98,7 @@ public class MifelServiceController {
     }
 
     @GetMapping("/encripta/")
-    public CryptoResponse encryptService(@RequestParam(name = "msg") String msg, @RequestParam(name = "key") String urlSafeBase64Key){
+    public CryptoResponse encryptService(@RequestParam(name = "msg") String msg, @RequestParam(name = "key", required = false) String urlSafeBase64Key){
         logger.info(String.format("Mensaje recibido: %s", msg));
         logger.info(String.format("Clave recibida: %s", urlSafeBase64Key));
         byte[] iv = new byte[16];
@@ -102,7 +107,13 @@ public class MifelServiceController {
         byte[] msgBytes = msg.getBytes(StandardCharsets.UTF_8);
         CryptoResponse res = new CryptoResponse();
         try {
-            String base64EncryptedMsg = Base64DefaultCipher.encrypt(msgBytes, urlSafeBase64Key, iv);
+            String base64EncryptedMsg = null;
+            if(urlSafeBase64Key != null){
+                base64EncryptedMsg = Base64DefaultCipher.encrypt(msgBytes, urlSafeBase64Key, iv);
+            }else{
+                byte[] encrypted = DefaultCipher.encrypt(msgBytes, defaultSecretKey, iv);
+                base64EncryptedMsg = Base64DefaultCipher.encodeBase64(encrypted);
+            }
             res.setEncryptedBase64(base64EncryptedMsg);
             res.setSuccess(true);
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
