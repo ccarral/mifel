@@ -1,13 +1,21 @@
 package com.mifel.service;
 
+import com.mifel.service.crypto.Base64DefaultCipher;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import javax.crypto.KeyGenerator;
+
+import java.security.NoSuchAlgorithmException;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
@@ -55,5 +63,20 @@ class MifelServiceApplicationTests {
                         .with(oauth2Login()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['pokemon'].id", is(25)));
+    }
+
+    @Test
+    void testEncryptApi() throws Exception {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
+        var secret = keyGenerator.generateKey();
+        byte[] keyBytes = secret.getEncoded();
+        String base64Key = Base64DefaultCipher.encodeBase64UrlSafe(keyBytes);
+        String msg = "ESTO ES UN MENSAJE";
+        String url = String.format("/api/mifel/encripta/?msg=%s&key=%s", msg,base64Key);
+
+        this.mockMvc.perform(get(url).with(oauth2Login()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$['success']",is(true)));
     }
 }

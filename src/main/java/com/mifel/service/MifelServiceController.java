@@ -1,5 +1,7 @@
 package com.mifel.service;
 
+import com.mifel.service.crypto.Base64DefaultCipher;
+import com.mifel.service.crypto.CryptoResponse;
 import com.mifel.service.pokemon.Pokemon;
 import com.mifel.service.pokemon.PokemonQueryResponse;
 import com.mifel.service.usuarios.Usuario;
@@ -8,13 +10,15 @@ import com.mifel.service.usuarios.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.SecureRandom;
 import java.util.List;
 
 @RestController
@@ -25,6 +29,8 @@ public class MifelServiceController {
     RestTemplate restTemplate;
     Logger logger = LoggerFactory.getLogger(MifelServiceController.class);
 
+    @Autowired
+    SecureRandom secureRandom;
     @Autowired
     UsuarioRepository usuarioRepository;
 
@@ -84,5 +90,25 @@ public class MifelServiceController {
             response.setSuccess(false);
         }
         return response;
+    }
+
+    @GetMapping("/encripta/")
+    public CryptoResponse encryptService(@RequestParam(name = "msg") String msg, @RequestParam(name = "key") String urlSafeBase64Key){
+        logger.info(String.format("Mensaje recibido: %s", msg));
+        logger.info(String.format("Clave recibida: %s", urlSafeBase64Key));
+        byte[] iv = new byte[16];
+        secureRandom.nextBytes(iv);
+        // Se asume que el mensaje esta en UTF 8
+        byte[] msgBytes = msg.getBytes(StandardCharsets.UTF_8);
+        CryptoResponse res = new CryptoResponse();
+        try {
+            String base64EncryptedMsg = Base64DefaultCipher.encrypt(msgBytes, urlSafeBase64Key, iv);
+            res.setEncryptedBase64(base64EncryptedMsg);
+            res.setSuccess(true);
+        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+            res.setFailureReason(e.getMessage());
+            res.setSuccess(false);
+        }
+        return res;
     }
 }

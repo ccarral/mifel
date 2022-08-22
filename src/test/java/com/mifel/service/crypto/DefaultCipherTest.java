@@ -1,6 +1,5 @@
 package com.mifel.service.crypto;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -40,7 +38,7 @@ class DefaultCipherTest {
     @Test
     void testBase64Encryption() throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         byte[] msg = "Hola amigos".getBytes(StandardCharsets.UTF_8);
-        String secretBase64 = Base64DefaultCipher.encodeBase64(secret.getEncoded());
+        String secretBase64 = Base64DefaultCipher.encodeBase64UrlSafe(secret.getEncoded());
         String base64EncodedOutput = Base64DefaultCipher.encrypt(msg, secretBase64, iv);
         byte[] out = Base64DefaultCipher.decodeBase64(base64EncodedOutput);
         String originalMsgBase64 = Base64DefaultCipher.decrypt(out, secretBase64, iv);
