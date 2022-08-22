@@ -84,7 +84,5 @@ public class MifelServiceController {
             response.setSuccess(false);
         }
         return response;
-
-
     }
 }
