@@ -39,7 +39,6 @@ public class MifelServiceController {
     @Autowired
     SecretKey defaultSecretKey;
 
-
     /**
      * Regresa todos los usuarios cuyo nombre coincide con `nombre`
      *
@@ -49,7 +48,7 @@ public class MifelServiceController {
     @GetMapping("/usuarios/nombre/{nombre}")
     public UsuarioQueryResponse getUsuariosByNombre(@PathVariable("nombre") String nombre) {
         logger.info("Usuarios por nombre [" + nombre + "]");
-        List<Usuario> usuarios =  usuarioRepository.findByNombreIgnoreCase(nombre);
+        List<Usuario> usuarios = usuarioRepository.findByNombreIgnoreCase(nombre);
         UsuarioQueryResponse response = new UsuarioQueryResponse();
         response.setUsuarios(usuarios);
         response.setCount(usuarios.size());
@@ -63,17 +62,18 @@ public class MifelServiceController {
     @GetMapping("/usuarios/")
     public UsuarioQueryResponse getAllUsuarios() {
         UsuarioQueryResponse response = new UsuarioQueryResponse();
-        List<Usuario> usuarios =  usuarioRepository.findAll();
+        List<Usuario> usuarios = usuarioRepository.findAll();
         response.setUsuarios(usuarios);
         response.setSuccess(true);
         response.setCount(usuarios.size());
         return response;
     }
+
     @GetMapping("/usuarios/id/{id}")
     public UsuarioQueryResponse getAllUsuarios(@PathVariable("id") long id) {
-        var usuario =  usuarioRepository.findById(id);
+        var usuario = usuarioRepository.findById(id);
         UsuarioQueryResponse response = new UsuarioQueryResponse();
-        if(usuario != null){
+        if (usuario != null) {
             response.getUsuarios().add(usuario);
         }
         response.setSuccess(response.getUsuarios().size() > 0);
@@ -81,9 +81,14 @@ public class MifelServiceController {
         return response;
     }
 
+    @GetMapping("/publico")
+    public String publicRoute() {
+        return "Esta ruta es pública";
+    }
+
     @GetMapping("/pokemon/{nombre}")
-    public PokemonQueryResponse getPokemon(@PathVariable("nombre") String nombre){
-        String url = String.format("https://pokeapi.co/api/v2/pokemon/%s",nombre);
+    public PokemonQueryResponse getPokemon(@PathVariable("nombre") String nombre) {
+        String url = String.format("https://pokeapi.co/api/v2/pokemon/%s", nombre);
         Pokemon pokemon = null;
         PokemonQueryResponse response = new PokemonQueryResponse();
         try {
@@ -98,7 +103,8 @@ public class MifelServiceController {
     }
 
     @GetMapping("/encripta/")
-    public CryptoResponse encryptService(@RequestParam(name = "msg") String msg, @RequestParam(name = "key", required = false) String urlSafeBase64Key){
+    public CryptoResponse encryptService(@RequestParam(name = "msg") String msg,
+            @RequestParam(name = "key", required = false) String urlSafeBase64Key) {
         logger.info(String.format("Mensaje recibido: %s", msg));
         logger.info(String.format("Clave recibida: %s", urlSafeBase64Key));
         byte[] iv = new byte[16];
@@ -108,9 +114,9 @@ public class MifelServiceController {
         CryptoResponse res = new CryptoResponse();
         try {
             String base64EncryptedMsg = null;
-            if(urlSafeBase64Key != null){
+            if (urlSafeBase64Key != null) {
                 base64EncryptedMsg = Base64DefaultCipher.encrypt(msgBytes, urlSafeBase64Key, iv);
-            }else{
+            } else {
                 byte[] encrypted = DefaultCipher.encrypt(msgBytes, defaultSecretKey, iv);
                 base64EncryptedMsg = Base64DefaultCipher.encodeBase64(encrypted);
             }
@@ -121,5 +127,10 @@ public class MifelServiceController {
             res.setSuccess(false);
         }
         return res;
+    }
+
+    @GetMapping("/admin")
+    public String onlyAdmin() {
+        return "Solo para vips.";
     }
 }

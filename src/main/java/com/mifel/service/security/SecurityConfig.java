@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
@@ -21,8 +20,6 @@ import org.springframework.security.config.annotation.web.configuration.OAuth2Au
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
@@ -51,18 +48,21 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests((auth) -> {
-            auth.anyRequest().authenticated();
-        }).formLogin(Customizer.withDefaults());
+            auth.antMatchers("/api/mifel/usuarios/**").authenticated();
+            auth.antMatchers("/api/mifel/admin").hasRole("ADMIN");
+        })
+                .formLogin(Customizer.withDefaults());
         return http.build();
     }
 
     @Bean
+    @SuppressWarnings("deprecation")
     public UserDetailsService userDetailsService() {
         // NOTE: Esto no es obsoleto, pero es inseguro para producción.
         UserDetails userDetails = User.withDefaultPasswordEncoder()
                 .username("carlos")
                 .password("password")
-                .roles("USER")
+                .roles("ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(userDetails);
     }
@@ -73,16 +73,10 @@ public class SecurityConfig {
                 .clientId("mifel-client")
                 // TODO: Generar un client secret aquí?
                 .clientSecret("{noop}secret")
-                // TODO: Cambiar a JWT?
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                // TODO: Cambiar a JWT?
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 // TODO: Este es el redirect URI especificado en
                 // application.yml?
-                .redirectUri("localhost:8080/login/oauth2/code/mifel-client-oidc")
-                .redirectUri("localhost:8080/authorized")
                 // Scope de la app cliente
                 .scope("read")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
@@ -108,6 +102,8 @@ public class SecurityConfig {
 
     @Bean
     public ProviderSettings providerSettings() {
+        // regresa la configuracion por default del authorization provider
+        // https://docs.spring.io/spring-authorization-server/docs/current/reference/html/configuration-model.html#configuring-provider-settings
         return ProviderSettings.builder().build();
     }
 
