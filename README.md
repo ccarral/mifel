@@ -10,21 +10,35 @@ un servicio de encriptación que provisto de un mensaje y una clave privada (opc
 con base64 (url-safe) regresa el contenido encriptado en base 64.
 
 ## Autenticación
-La aplicación utiliza el servicio de autenticación OAuth2 provisto por Github
+La aplicación implementa un servidor OAuth2 que utiliza JWT por default,
+firmado con un par de llaves pública y privada (RSA).
 
 ## Ejecución
+
+Para la ejecución, es necesario exponer una llave privada aes-128 en la variable
+de entorno `$MIFEL_SECRET`.
+
+Esta puede ser generada de la siguiente manera:
+
+```bash
+export MIFEL_SECRET=$(openssl enc -aes-128-cbc -k "contraseña" -pbkdf2 -P -md sha1 | grep key | sed 's/.*=//')
+```
 
 ### Build
 ```bash
 ./mvnw build
 ```
 
+### Pruebas unitarias 
+```bash
+./mvnw test 
+```
+
 ### Ejecución con Docker
 ```bash
 docker build -t ccarral/mifel .
 docker run -p 8080:8080 \
-  -e MIFEL_SECRET  -e GITHUB_CLIENT_SECRET \
-  -e GITHUB_CLIENT_ID  \
+  -e MIFEL_SECRET
   ccarral/mifel
 ```
 
