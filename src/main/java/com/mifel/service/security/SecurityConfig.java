@@ -4,6 +4,8 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -50,6 +52,7 @@ public class SecurityConfig {
         http.authorizeRequests((auth) -> {
             auth.antMatchers("/api/mifel/usuarios/**").authenticated();
             auth.antMatchers("/api/mifel/admin").hasRole("ADMIN");
+            auth.antMatchers("/api/mifel/pokemon/**").hasRole("POKEMON_MASTER");
         })
                 .formLogin(Customizer.withDefaults());
         return http.build();
@@ -59,12 +62,20 @@ public class SecurityConfig {
     @SuppressWarnings("deprecation")
     public UserDetailsService userDetailsService() {
         // NOTE: Esto no es obsoleto, pero es inseguro para producción.
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("carlos")
+        UserDetails userDetailsAdmin = User.withDefaultPasswordEncoder()
+                .username("admin")
                 .password("password")
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(userDetails);
+        UserDetails userDetailsPokemonMaster = User.withDefaultPasswordEncoder()
+                .username("ash")
+                .password("password")
+                .roles("POKEMON_MASTER")
+                .build();
+        List<UserDetails> userDetailsList = new ArrayList<>();
+        userDetailsList.add(userDetailsAdmin);
+        userDetailsList.add(userDetailsPokemonMaster);
+        return new InMemoryUserDetailsManager(userDetailsList);
     }
 
     @Bean

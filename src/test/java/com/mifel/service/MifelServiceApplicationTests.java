@@ -54,7 +54,7 @@ class MifelServiceApplicationTests {
     @Test
     void testPokemonSuccess() throws Exception {
         this.mockMvc.perform(get("/api/mifel/pokemon/pikachu")
-                .with(oauth2Login()))
+                .with(oauth2Login().authorities(AuthorityUtils.createAuthorityList("ROLE_POKEMON_MASTER"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$['pokemon'].id", is(25)));
     }
