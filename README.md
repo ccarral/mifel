@@ -26,7 +26,7 @@ export MIFEL_SECRET=$(openssl enc -aes-128-cbc -k "contraseña" -pbkdf2 -P -md s
 
 ### Build
 ```bash
-./mvnw build
+./mvnw package 
 ```
 
 ### Pruebas unitarias 
