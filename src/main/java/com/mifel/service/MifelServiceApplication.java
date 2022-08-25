@@ -16,23 +16,25 @@ public class MifelServiceApplication {
 
     @Value("${secrets.key}")
     String aes128Key;
+
     public static void main(String[] args) {
         SpringApplication.run(MifelServiceApplication.class, args);
     }
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 
     @Bean
-    public SecureRandom secureRandom(){
+    public SecureRandom secureRandom() {
         return new SecureRandom();
     }
 
     @Bean
-    public SecretKey secretKey(){
-            byte[] keyBytes = aes128Key.getBytes(StandardCharsets.US_ASCII);
-            return new SecretKeySpec(keyBytes,"AES");
+    public SecretKey secretKey() {
+        byte[] keyBytes = aes128Key.getBytes(StandardCharsets.US_ASCII);
+        return new SecretKeySpec(keyBytes, "AES");
     }
 
 }
